@@ -1,0 +1,109 @@
+<div class="container mx-auto flex flex-col items-center">
+    <h2 class="text-2xl font-semibold leading-7 text-gray-900 text-center">Detalhes da Música</h2>
+  
+    @if (playlist && !isEditing) {
+      <div class="flex flex-col items-center w-1/3 h-2/4 bg-white shadow-md rounded-lg p-6 my-6 text-center *:gap-1">
+        <img [src]="playlist.imgPlaylist" alt="" class="size-28 rounded-lg m-4">
+            <p><strong>Nome da Playlist:</strong> <br> {{ playlist.name }} </p>
+            <p><strong>Quantidade de Músicas: </strong> {{playlist.amountSongs}} </p>
+            @if (playlist.amountSongs === 0) {
+              <p>Nenhuma música adicionada.</p>
+            } @else {
+              <div class="overflow-x-auto mb-4">
+                <table mat-table [dataSource]="playlistMusics" class="min-w-full min-h-full bg-white shadow-md rounded-lg">
+                   <!-- Coluna Capa -->
+                  <ng-container matColumnDef="imgSong">
+                    <th mat-header-cell *matHeaderCellDef> Capa </th>
+                    <td mat-cell *matCellDef="let songs"> 
+                      <img class="size-10 rounded-lg" [src]="songs.imgSong" alt="">  
+                    </td>
+                  </ng-container>
+
+                  <!-- Coluna Cantor -->
+                  <ng-container matColumnDef="singer">
+                    <th mat-header-cell *matHeaderCellDef> Cantor </th>
+                    <td mat-cell *matCellDef="let songs"> {{ songs.singer }} </td>
+                  </ng-container>
+
+                  <!-- Coluna Música -->
+                  <ng-container matColumnDef="song">
+                    <th mat-header-cell *matHeaderCellDef> Música </th>
+                    <td mat-cell *matCellDef="let songs"> {{ songs.song }} </td>
+                  </ng-container>
+
+                  <!-- Cabeçalhos da Tabela -->
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <!-- Linhas da Tabela -->
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+                </table>
+              </div>
+            }
+        <div class="flex flex-row justify-between w-2/4">
+          <!-- Botão para voltar à lista de músicas -->
+          <button class="flex flex-row items-center w-fit h-fit gap-1 bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600" (click)="goBackToList()">
+              <svg lucideList class="size-4"></svg>
+              Listagem
+          </button>
+          <!-- Botão para editar -->
+          <button class="flex flex-row items-center w-fit h-fit gap-1 bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600" (click)="toggleEdit()">
+              <svg lucidePen class="size-4"></svg>
+              Editar
+          </button>
+        </div>
+    </div>
+    }
+    
+    <!-- Formulário de edição -->
+     @if (isEditing) {
+      <div class="w-1/2 h-2/4 bg-white shadow-md rounded-lg border border-gray-900/10 p-12">
+        <h3 class="text-2xl font-semibold leading-7 text-gray-900 text-center">Editar Playlist</h3>
+        <form [formGroup]="playlistForm" class="grid grid-cols-2 sm:grid-cols-6 gap-8">
+          
+          <!-- Capa da Playlist -->
+          <div class="col-span-2 sm:col-span-6">
+            <label for="imgPlaylist" class="text-base font-medium leading-6 text-gray-900">Capa da Playlist</label>
+            <div class="mt-2">
+              <input 
+                type="url" 
+                id="imgPlaylist" 
+                formControlName="imgPlaylist"
+                class="w-full h-fit rounded-md border-1 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder="Insira o link da imagem para a playlist."
+                >
+            </div>
+          </div>
+
+
+          <!-- Nome da Playlist -->
+          <div class="col-span-2 sm:col-span-6">
+            <label for="name" class="block text-base font-medium leading-6 text-gray-900">Nome da Playlist</label>
+            <div class="mt-2">
+              <input
+                type="text"
+                id="name"
+                formControlName="name"
+                maxlength="50"
+                class="block w-full h-fit rounded-md border-1 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder="Digite o nome da playlist."
+              />
+            </div>
+          </div>
+    
+          <!-- Botão de Enviar -->
+          <div class="flex flex-row gap-10 col-span-2 sm:col-span-6">
+            <button (click)="goBackToList()" class="flex flex-row items-center justify-center gap-1 p-2 w-full text-white bg-red-500 hover:bg-red-600 font-medium rounded-md">
+              <svg lucideX class="size-5"></svg>
+              Cancelar
+            </button>
+            <button (click)="updatePlaylist()" class="flex flex-row items-center justify-center gap-1 p-2 w-full bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-600 focus:ring-inset" >
+              <svg lucideCheck class="size-5"></svg>
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </div>
+    
+  

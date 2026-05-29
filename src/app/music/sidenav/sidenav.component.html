@@ -1,0 +1,14 @@
+<div class="absolute w-">
+  <mat-drawer-container class="sidenav-container">
+    <mat-drawer mode="side" opened class="sidenav-drawer">
+      <mat-nav-list>
+        <a mat-list-item href="" routerLink="music" >Início</a>
+        <a mat-list-item href="" routerLink="list" >Listagem de Músicas</a>
+        <a mat-list-item href="" routerLink="playlist">Playlist</a>
+      </mat-nav-list>
+    </mat-drawer>
+    <mat-drawer-content>
+      <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

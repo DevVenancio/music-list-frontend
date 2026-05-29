@@ -1,0 +1,127 @@
+<div class="container mx-auto flex flex-col items-center">
+    <h2 class="text-2xl font-semibold leading-7 text-gray-900 text-center">Detalhes da Música</h2>
+  
+    @if (music && !isEditing) {
+      <div class="flex flex-col items-center w-1/3 h-2/4 bg-white shadow-md rounded-lg p-6 my-6 text-center *:gap-1">
+        <img [src]="music.imgSong" alt="" class="size-28 rounded-lg m-4">
+            <p><strong>Cantor:</strong> <br> {{ music.singer }} </p>
+            <p><strong>Música:</strong> <br> {{ music.song }}</p>
+            <p>
+              <strong>Gênero:</strong> 
+              <br> 
+                <mat-chip> {{music.genre}} </mat-chip>
+            </p>
+            <p><strong>Playlist:</strong> <br> {{ music.playlist }}</p>
+            <p><strong>Data de Registro:</strong> <br> {{ music.registrationDate | date: 'yyyy-MM-dd':'UTC' }}</p>
+        <div class="flex flex-row justify-between w-2/4">
+          <!-- Botão para voltar à lista de músicas -->
+          <button class="flex flex-row items-center w-fit h-fit gap-1 bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600" (click)="goBackToList()">
+              <svg lucideList class="size-4"></svg>
+              Listagem
+          </button>
+          <!-- Botão para editar -->
+          <button class="flex flex-row items-center w-fit h-fit gap-1 bg-indigo-500 text-white p-2 rounded-md hover:bg-indigo-600" (click)="toggleEdit()">
+              <svg lucidePen class="size-4"></svg>
+              Editar
+          </button>
+        </div>
+    </div>
+    }
+    
+    <!-- Formulário de edição -->
+     @if (isEditing) {
+      <div class="w-1/2 h-2/4 bg-white shadow-md rounded-lg border border-gray-900/10 p-12">
+        <h3 class="text-2xl font-semibold leading-7 text-gray-900 text-center">Editar Música</h3>
+        <form [formGroup]="musicForm" class="grid grid-cols-2 sm:grid-cols-6 gap-8">
+          
+          <!-- Capa da Música -->
+          <div class="col-span-2 sm:col-span-6">
+            <label for="imgSong" class="text-base font-medium leading-6 text-gray-900">Capa</label>
+            <div class="mt-2">
+              <input 
+                type="url" 
+                id="imgSong" 
+                formControlName="imgSong"
+                class="w-full h-fit rounded-md border-1 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder="Insira o link da imagem para a música."
+                >
+            </div>
+          </div>
+
+
+          <!-- Cantor -->
+          <div class="col-span-1 sm:col-span-3">
+            <label for="singer" class="block text-base font-medium leading-6 text-gray-900">Cantor</label>
+            <div class="mt-2">
+              <input
+                type="text"
+                id="singer"
+                formControlName="singer"
+                maxlength="50"
+                class="block w-full h-fit rounded-md border-1 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder="Digite o nome do cantor"
+              />
+            </div>
+          </div>
+
+          <!-- Música -->
+          <div class="col-span-1 sm:col-span-3">
+            <label for="song" class="block text-base font-medium leading-6 text-gray-900">Música</label>
+            <div class="mt-2">
+              <input
+                type="text"
+                id="song"
+                formControlName="song"
+                maxlength="100"
+                class="block w-full h-fit rounded-md border-1 p-2 border-1 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder="Digite o nome da música"
+              />
+            </div>
+          </div>
+
+          <!-- Gênero -->
+          <div class="col-span-1 sm:col-span-3">
+            <label for="genre" class="block text-sm font-medium leading-6 text-gray-900">Estilo Musical</label>
+            <div class="mt-2">
+              <input
+                type="text"
+                id="genre"
+                formControlName="genre"
+                maxlength="30"
+                class="block w-full h-fit rounded-md border-1 p-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                placeholder="Digite o estilo musical"
+              />
+            </div>
+          </div>
+
+          <!-- Playlist -->
+          <div class="col-span-1 sm:col-span-3">
+            <label for="playlist" class="block text-sm font-medium leading-6 text-gray-900">Playlist</label>
+            <div class="mt-2">
+              <mat-form-field appearance="outline" class="w-full h-fit">
+                <mat-select class="">
+                @for (playlist of playlists; track playlist) {
+                  <mat-option [value]="playlist._id"> {{playlist.name}} </mat-option>
+                }
+              </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+    
+          <!-- Botão de Enviar -->
+          <div class="flex flex-row gap-10 col-span-2 sm:col-span-6">
+            <button (click)="goBackToList()" class="flex flex-row items-center justify-center gap-1 p-2 w-full text-white bg-red-500 hover:bg-red-600 font-medium rounded-md">
+              <svg lucideX class="size-5"></svg>
+              Cancelar
+            </button>
+            <button (click)="updateMusic()" class="flex flex-row items-center justify-center gap-1 p-2 w-full bg-green-600 text-white font-medium rounded-md hover:bg-green-700 focus:ring-2 focus:ring-green-600 focus:ring-inset" >
+              <svg lucideCheck class="size-5"></svg>
+              Salvar
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </div>
+    
+  

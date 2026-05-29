@@ -1,0 +1,62 @@
+<div class="flex flex-col border-gray-900/10 pb-12 mx-10">
+  <h2 class="text-2xl font-semibold leading-7 text-gray-900 text-center">Cadastrar Música</h2>
+
+  <form [formGroup]="playlistForm" class="self-center w-1/2 h-2/4 bg-white shadow-md rounded-lg border border-gray-900/10 p-8 mt-10 grid grid-cols-2 gap-8 sm:grid-cols-6 ">
+    <div class="col-span-2 sm:col-span-6">
+      <p class=" text-base leading-6 text-gray-600 text-center">Preencha as informações da playlist abaixo.</p>
+    </div>
+
+    <!-- Imagem da Capa -->
+    <div class="col-span-2 sm:col-span-6">
+      <label for="imgPlaylist" class="block text-sm font-medium leading-6 text-gray-900">
+        Capa da Playlist
+      </label>
+      <div>
+        <input 
+          type="url"
+          id="imgPlaylist"
+          formControlName="imgPlaylist"
+          class="block w-full h-fit border-1 p-2 rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          placeholder="Insira o link de uma imagem para a capa da playlist."
+          >
+      </div>
+    </div>
+
+    <!-- Cantor -->
+    <div class="col-span-1 sm:col-span-3">
+      <label for="singer" class="block text-sm font-medium leading-6 text-gray-900">Nome da Playlist</label>
+      <div class="mt-2">
+        <input
+          type="text"
+          id="name"
+          formControlName="name"
+          maxlength="51"
+          class="block w-full h-fit border-1 p-2 rounded-md text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+          placeholder="Digite o nome da playlist."
+        />
+        <mat-error *ngIf="playlistForm.get('name')?.invalid && (playlistForm.get('name')?.touched || playlistForm.get('name')?.dirty)" class="text-sm text-red-500">
+          {{ getErrorMessage('name') }}
+        </mat-error>
+      </div>
+    </div>
+
+    <!-- Botão de Enviar -->
+    <div class="col-span-2 gap-10 sm:col-span-6 flex justify-between">
+      <button
+        class="flex flex-row items-center justify-center p-2 w-1/2 bg-red-500 text-white font-medium rounded-md hover:bg-red-600 focus:ring-2 focus:ring-red-600 focus:ring-inset disabled:opacity-50"
+        (click)="listPlaylists()"
+      >
+      <svg lucideX class="size-5"></svg>
+        Cancelar
+      </button>
+      <button
+        [attr.disabled]="!playlistForm.valid ? true : null" 
+        class="flex flex-row items-center justify-center p-2 w-1/2 bg-green-500 text-white font-medium rounded-md hover:bg-green-600 focus:ring-2 focus:ring-green-600 focus:ring-inset disabled:opacity-50"
+        (click)="onSubmit()"
+        >
+        <svg lucideCheck class="size-5"></svg>
+        Salvar
+      </button>
+    </div>
+  </form>
+</div>

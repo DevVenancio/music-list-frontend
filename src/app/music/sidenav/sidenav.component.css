@@ -1,0 +1,11 @@
+.sidenav-container{
+  position: absolute;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: lightgray;
+}
+
+.sidenav-drawer {
+  width: 15%;
+  background-color: aliceblue;
+}

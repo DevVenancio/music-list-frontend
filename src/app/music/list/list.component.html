@@ -1,0 +1,151 @@
+<div class="container mx-auto">
+  <h2 class="text-2xl font-semibold leading-7 text-gray-900 text-center">Listagem de Músicas</h2>
+
+  <div class="flex justify-between my-4">
+    <!-- Botão para alternar entre Cards e Tabela -->
+    <div class="flex justify-center my-4">
+      <button class="flex flex-row items-center gap-1 w-fit h-fit mx-2 bg-indigo-600 text-white font-medium p-2 rounded-lg hover:bg-indigo-700 focus:outline focus:outline-offset-2 focus:outline-indigo-600 active:bg-indigo-600" (click)="viewMode = 'cards'">
+        <svg lucideCardSim class="size-5"></svg>
+        Cards
+      </button>
+      <button class="flex flex-row items-center gap-1 w-fit h-fit mx-2 bg-indigo-600 text-white font-medium p-2 rounded-lg hover:bg-indigo-700 focus:outline focus:outline-offset-2 focus:outline-indigo-600 active:bg-indigo-600" (click)="viewMode = 'table'">
+        <svg lucideTable class="size-5"></svg>
+          Tabela
+        </button>
+    </div>
+     
+    <!-- Botão para adicionar nova música -->
+    <div class="flex justify-center my-4">
+      <button class="flex flex-row items-center gap-1 w-fit h-fit mx-2 bg-green-600 text-white font-medium p-2 rounded-md hover:bg-green-700" (click)="addNewMusic()">
+        <svg lucidePlus class="size-5"></svg>
+        Adicionar Nova Música
+      </button>
+    </div>
+  </div>
+  
+
+
+   @if (viewMode === 'cards') {
+    <!-- Exibição em Cards -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+        @for (music of musicList; track music._id) {
+          <mat-card class="flex flex-col items-center h-full w-80 shadow-custom transition-all duration-300 ease-in-out hover:scale-[1.02]" appearance="outlined">
+          <mat-card-header class="flex flex-col gap-2">
+            <div mat-card-image>
+              <img class="h-44 w-44 rounded-2xl" [src]="music.imgSong" alt="">
+            </div>
+            <div class="flex flex-col items-center mb-1 p-1">
+              <mat-card-title>{{ music.song }}</mat-card-title>
+              <mat-card-subtitle>{{ music.singer }}</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+              <div class="flex flex-col items-center mb-3 ">
+                <strong class="self-center">Gêneros:</strong> 
+                <div>
+                  <mat-chip>{{ music.genre }}</mat-chip>
+                </div>
+              </div>
+              <div class="flex flex-col items-center h-auto w-auto mb-3">
+                <strong>Playlist:</strong> 
+                <div>
+                  <mat-chip-set>
+                    @if (music.playlist != null && music.playlist.name != "") {
+                      <mat-chip> 
+                        {{music.playlist.name}}
+                      </mat-chip>
+                      } @else {
+                        Playlist não encontrada.
+                      }
+                  </mat-chip-set>
+                </div>
+              </div>
+          </mat-card-content>
+          <mat-card-actions class="justify-between gap-4">
+            <button mat-button class="bg-slate-500 text-white p-2 rounded-md hover:bg-slate-600" (click)="viewMusicDetails(music._id)">
+              <svg lucideInfo class="size-5"></svg>
+            </button>
+            <button mat-button class="bg-red-500 text-white p-2 rounded-md hover:bg-red-600" (click)="confirmMusicDelete(music._id)">
+              <svg lucideTrash class="size-5"></svg>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+        }
+      </div>
+   } @else if (viewMode === 'table') {
+    <!-- Exibição em Tabela -->
+  <div class="overflow-x-auto">
+    <table mat-table [dataSource]="musicList" class="min-w-full bg-white shadow-md rounded-lg">
+
+      <!-- Coluna Capa -->
+      <ng-container matColumnDef="imgSong">
+        <th mat-header-cell *matHeaderCellDef> Capa </th>
+        <td mat-cell *matCellDef="let music"> 
+          <img class="size-10 rounded-lg" [src]="music.imgSong" alt="">  
+        </td>
+      </ng-container>
+
+      <!-- Coluna Cantor -->
+      <ng-container matColumnDef="singer">
+        <th mat-header-cell *matHeaderCellDef> Cantor </th>
+        <td mat-cell *matCellDef="let music"> {{ music.singer }} </td>
+      </ng-container>
+
+      <!-- Coluna Música -->
+      <ng-container matColumnDef="song">
+        <th mat-header-cell *matHeaderCellDef> Música </th>
+        <td mat-cell *matCellDef="let music"> {{ music.song }} </td>
+      </ng-container>
+
+      <!-- Coluna Gênero -->
+      <ng-container matColumnDef="genre">
+        <th mat-header-cell *matHeaderCellDef> Gênero </th>
+        <td mat-cell *matCellDef="let music"> {{ music.genre }} </td>
+      </ng-container>
+
+      <!-- Coluna Playlist -->
+      <ng-container matColumnDef="playlist">
+        <th mat-header-cell *matHeaderCellDef> Playlist </th>
+        <td mat-cell *matCellDef="let music"> 
+          @if (music.playlist != null && music.playlist.name != "") {
+            {{music.playlist.name}}
+          } @else {
+            Playlist não encontrada.
+          }
+        </td>
+      </ng-container>
+
+      <!-- Coluna Data de Registro -->
+      <ng-container matColumnDef="registrationDate">
+        <th mat-header-cell *matHeaderCellDef> Registro </th>
+        <td mat-cell *matCellDef="let music"> {{ music.registrationDate | date: 'yyyy-MM-dd':'UTC' }} </td>
+      </ng-container>
+
+      <!-- Coluna para Ações -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let music">
+          <div class="flex flex-row gap-2">
+            <!-- Botão para ver detalhes -->
+            <button class="bg-slate-500 text-white p-2 rounded-md hover:bg-slate-600" 
+                    (click)="viewMusicDetails(music._id)">
+              <svg lucideInfo class="size-5"></svg>
+            </button>
+          <!-- Botão de exclusão -->
+            <button class="bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
+                    (click)="confirmMusicDelete(music._id)">
+              <svg lucideTrash class="size-5"></svg>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+        <!-- Cabeçalhos da Tabela -->
+        <tr mat-header-row *matHeaderRowDef="displayedColumns.concat(['actions'])"></tr>
+        <!-- Linhas da Tabela -->
+        <tr mat-row *matRowDef="let row; columns: displayedColumns.concat(['actions'])"></tr>
+      </table>
+    </div>
+   }
+</div>
+<router-outlet></router-outlet>

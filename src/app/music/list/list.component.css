@@ -1,0 +1,25 @@
+.shadow-custom {
+  box-shadow: 0px 0px 7px 7px rgba(0, 0, 0, 0.1); /* Ajuste os valores conforme necessário */
+}
+
+.mat-column-imgSong{
+  width: 32px;
+}
+
+.mat-column-singer{
+  width: 200px;
+}
+
+.mat-column-song{
+  width: 300px;
+}
+
+.mat-column-genre{
+  width: 250px;
+  font-style: italic;
+}
+
+.mat-mdc-row .mat-mdc-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+}
