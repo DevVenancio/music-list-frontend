@@ -1,6 +1,6 @@
 # music-list-frontend
 
-> [!WARNING] Importante
+> [!WARNING] 
 > *Esse projeto ainda está em desenvolvimento, portanto não é sua versão final.*
 
 Um pequeno sistema para criação e listagem de **músicas** e **playlists**.
@@ -32,7 +32,7 @@ Um pequeno sistema para criação e listagem de **músicas** e **playlists**.
 - Contagem de músicas vínculadas à playlist. 
 
 ## Clonagem do Projeto
-> [!NOTE] Informações Complementares
+> [!NOTE]
 > - É importante ressaltar que esse projeto é **totalmente dependente** do seu backend estar ativo, portanto deve-se ter ambos os projetos clonados e rodando simultaneamente para que tudo esteja em perfeito funcionamento.
 >   - Link do repositório: [**music-list-backend**](https://github.com/DevVenancio/music-list-backend)
 > - Outro ponto importante é que deve-se ter também uma **conexão com o MongoDB** criada e configurada, sendo necessário para que as informações sejam salvas corretamente.
